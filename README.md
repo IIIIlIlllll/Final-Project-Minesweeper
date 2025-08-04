@@ -1,96 +1,32 @@
-import random
-from typing import List, Tuple
+Final Project Proposal
 
-def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], List[List[int]]]:
-    """
-    初始化棋盘，生成可见地图和真实地图（含雷及数字）。
+Group Members
+Yuanze Chen, 3041987731
+Kevin Zeng, 3041830028
 
-    参数:
-        rows: 行数
-        cols: 列数
-        num_mines: 地雷数量
+Project Vision
+We want to realize the classic game "Minesweeper". This is a logic-based puzzle game. The objective of the game is to clear the board without triggering any mines by using the numerical clues indicating the number of adjacent mines
 
-    返回:
-        visible_board: 用户看到的棋盘（初始为全'□'）
-        real_board: 真正的棋盘，含数字与'M'代表雷
-    """
-    pass
+How will someone use your project?
+Users will use the j keyboard to control and interact with the game.Enter the coordinates to select the cell. Enter "flag" and “remove_flag" along with coordinates to place or remove marks on suspicious landmines.
+At the beginning, the user will input the difficulty level (for example, easy, medium, hard), which will determine the size of the chessboard and the number of mines
 
 
-def place_mines(rows: int, cols: int, num_mines: int) -> List[List[int]]:
-    """
-    随机放置地雷并计算每个格子的数字（周围地雷数）。
 
-    返回:
-        real_board: 包含地雷('M')和数字(0~8)的地图
-    """
-    output=[]
-    for row in rows:
-        output+=[0]*cols
+What are the three features you want to build?
+Reveal algorithms (complex logic)
+When the user clicks on the blank area, this function will display all adjacent empty cells. It will also correctly display the numbered cells to indicate how many landmines are nearby.
 
+Game end and victory check
+We will develop a feature to detect when a player touches a landmine (game ends) or successfully clears all non-landmine cells (victory).
 
-def print_board(visible_board: List[List[str]]) -> None:
-    """
-    打印当前用户可见的棋盘。
+Display map 
+Use list to display cell, displayed numbers, marked cells and landmines.
 
-    参数:
-        visible_board: 用户视角棋盘
-    """
-    pass
+GUI display(maybe)
+We will design a GUI to draw a minesweeper map based on the selected difficulty level. This GUI will display the map, displayed numbers, marked grids and landmines. It will also display the screen at the end of the game, including Windows for victory and defeat.
 
 
-def reveal_cell(row: int, col: int, visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
-    """
-    打开一个格子，如果是0则展开周围，更新visible_board。
+Language
+We will be implementing this in Python.
 
-    参数:
-        row, col: 要打开的格子位置
-        visible_board: 用户可见地图
-        real_board: 真实地图
-
-    返回:
-        是否踩雷，True 表示踩到地雷，游戏失败
-    """
-    pass
-
-
-def flag_cell(row: int, col: int, visible_board: List[List[str]]) -> None:
-    """
-    标记或取消标记一个格子为旗帜。
-
-    参数:
-        row, col: 要操作的格子位置
-        visible_board: 用户可见地图
-    """
-    pass
-
-
-def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
-    """
-    检查是否胜利：所有非地雷格子都已打开。
-
-    返回:
-        True 表示胜利
-    """
-    pass
-
-
-def get_user_action() -> Tuple[str, int, int]:
-    """
-    从用户处获取输入操作。
-
-    返回:
-        action_type: 'open' 或 'flag'
-        row, col: 操作的目标坐标
-    """
-    pass
-
-
-def play_game() -> None:
-    """
-    主游戏循环，控制整个游戏流程。
-    """
-    pass
-
-if __name__ == "__main__":
-    play_game()
