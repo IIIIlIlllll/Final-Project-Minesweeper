@@ -61,7 +61,17 @@ def reveal_cell(row: int, col: int, visible_board: List[List[str]], real_board: 
     返回:
         是否踩雷，True 表示踩到地雷，游戏失败
     """
-    pass
+    if real_board[row][col]=='M':
+        visible_board[row][col]=='M'
+        return True
+    if visible_board[row][col]!=real_board[row][col]:
+        visible_board[row][col]=real_board[row][col]
+        if visible_board[row][col]==0:
+            for i in range(row-1,row+2):
+                for j in range(col-1,col+2):
+                    if 0<=i<len(real_board) and 0<=j<len(real_board[0]) and (not (i==row and j==col)):
+                        reveal_cell(i,j,visible_board,real_board)
+    return False
 
 
 def flag_cell(row: int, col: int, visible_board: List[List[str]]) -> None:
@@ -123,6 +133,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
