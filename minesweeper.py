@@ -24,9 +24,21 @@ def place_mines(rows: int, cols: int, num_mines: int) -> List[List[int]]:
     返回:
         real_board: 包含地雷('M')和数字(0~8)的地图
     """
-    output=[]
-    for row in rows:
-        output+=[0]*cols
+    real_board=[]
+    for row in range(rows):
+        real_board+=[[0]*cols]
+    seed=random.sample(range(rows*cols),num_mines)
+    for mine in range(num_mines):
+        row=int(seed[mine]/cols)
+        col=seed[mine]%cols
+        real_board[row][col]='M'
+        for i in range(row-1,row+2):
+            for j in range(col-1,col+2):
+                if 0<=i<rows and 0<=j<cols and type(real_board[i][j])==int:
+                    real_board[i][j]+=1
+    return real_board
+
+
 
 
 def print_board(visible_board: List[List[str]]) -> None:
