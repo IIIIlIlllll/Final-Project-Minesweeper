@@ -37,6 +37,9 @@ def place_mines(rows: int, cols: int, num_mines: int) -> List[List[int]]:
 
 
 def print_board(visible_board: List[List[str]]) -> None:
+    print(' '.join(map(str, list(range(0, len(visible_board)+1)))))
+    for x in range (0, len(visible_board)):
+            print(str(x+1) + ' ' + (' '.join(visible_board[x])))
     """
     打印当前用户可见的棋盘。
 
@@ -101,5 +104,6 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
