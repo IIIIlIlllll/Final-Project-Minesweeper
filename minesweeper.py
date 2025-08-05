@@ -1,21 +1,16 @@
 import random
 from typing import List, Tuple
 
-#kevin#def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], List[List[int]]]:
-    """
-    初始化棋盘，生成可见地图和真实地图（含雷及数字）。
-
-    参数:
-        rows: 行数
-        cols: 列数
-        num_mines: 地雷数量
-
-    返回:
-        visible_board: 用户看到的棋盘（初始为全'□'）
-        real_board: 真正的棋盘，含数字与'M'代表雷
-    """
-    pass
-
+def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], List[List[int]]]:
+    visible_board = []
+    real_board = []
+    for x in range(0,rows):
+        visible_board.append([])
+        for y in range(0,cols):
+            visible_board[x].append('□')
+        real_board = place_mines(rows,cols,num_mines)
+    return visible_board,real_board
+    ###初始化棋盘，生成可见地图和真实地图（含雷及数字)###
 
 def place_mines(rows: int, cols: int, num_mines: int) -> List[List[int]]:
     """
@@ -106,4 +101,5 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
