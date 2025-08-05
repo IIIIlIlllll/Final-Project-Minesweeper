@@ -92,7 +92,11 @@ def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -
     返回:
         True 表示胜利
     """
-    pass
+    for row in range(len(visible_board)):
+        for col in range(len(visible_board[row])):
+            if type(real_board[row][col])==int and type(visible_board[row][col])!=int:
+                return False
+    return True
 
 
 def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
@@ -133,6 +137,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
