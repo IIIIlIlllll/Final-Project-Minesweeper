@@ -85,15 +85,34 @@ def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -
     pass
 
 
-def get_user_action() -> Tuple[str, int, int]:
+def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
     """
-    从用户处获取输入操作。
+    从用户处获取输入操作，并且确保用户输入合法。
 
     返回:
         action_type: 'open' 或 'flag'
-        row, col: 操作的目标坐标
+        row, col: 操作的目标坐标(已经减过1)
     """
-    pass
+    print("Please enter 'r' to reveal a cell or 'f' to place a flag on a cell. Then enter The coordinates of the cell, separated by a space.(eg. r 1 2)")
+    def input_check(visible_board):
+        action_type,row,col=input().split()
+        try:
+            row=int(row)
+            col=int(col)
+        except ValueError:
+            print('Invalid input. Please enter again.')
+            input_check(visible_board)
+        if not(action_type=='r'or action_type=='f'):
+            print('Invalid input. Please enter again.')
+            input_check(visible_board)
+        if not(1<=int(row)<=len(visible_board) and 1<=int(col)<=len(visible_board[0])):
+            print('Input is outside the board. Please enter again.')
+            input_check(visible_board)
+        if action_type=='r' and type(visible_board[int(row)-1][int(col)-1])==int:
+            print('This cell has already been revealed. Please enter again')
+            input_check(visible_board)
+        return (action_type,int(row)-1,int(col)-1)
+    return input_check(visible_board)
 
 
 def play_game() -> None:
@@ -104,6 +123,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
