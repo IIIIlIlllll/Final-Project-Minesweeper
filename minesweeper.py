@@ -1,5 +1,3 @@
-
-
 import random
 from typing import List, Tuple
 
@@ -106,6 +104,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
