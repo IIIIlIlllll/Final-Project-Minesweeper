@@ -1,7 +1,7 @@
 import random
 from typing import List, Tuple
 
-def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], List[List[int]]]:
+#kevin#def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], List[List[int]]]:
     """
     初始化棋盘，生成可见地图和真实地图（含雷及数字）。
 
@@ -106,3 +106,4 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
