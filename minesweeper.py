@@ -25,13 +25,9 @@ def place_mines(rows: int, cols: int, num_mines: int) -> List[List[int]]:
 
 
 def print_board(visible_board: List[List[str]]) -> None:
-    """
-    打印当前用户可见的棋盘。
-
-    参数:
-        visible_board: 用户视角棋盘
-    """
-    pass
+    print(' '.join(map(str, list(range(0, len(visible_board)+1)))))
+    for x in range (0, len(visible_board)):
+            print(str(x+1) + ' ' + (' '.join(visible_board[x])))
 
 
 def reveal_cell(row: int, col: int, visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
@@ -89,4 +85,5 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
