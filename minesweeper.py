@@ -103,7 +103,7 @@ def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
         action_type: 'open' 或 'flag'
         row, col: 操作的目标坐标(已经减过1)
     """
-    print("Please enter 'r' to reveal a cell or 'f' to place a flag on a cell. Then enter The coordinates of the cell, separated by a space.(eg. r 1 2)")
+    print("Please enter 'r' to reveal a cell or 'f' to place or remove a flag on a cell. Then enter The coordinates of the cell, separated by a space.(eg. r 1 2)")
     def input_check(visible_board):
         action_type,row,col=input().split()
         try:
@@ -133,6 +133,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
