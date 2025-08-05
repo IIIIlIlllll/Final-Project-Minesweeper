@@ -119,14 +119,17 @@ def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
         except ValueError:
             print('Invalid input. Please enter again.')
             input_check(visible_board)
-        if not(action_type=='r'or action_type=='f'):
+        if not(action_type=='r' or action_type=='f'):
             print('Invalid input. Please enter again.')
             input_check(visible_board)
         if not(1<=int(row)<=len(visible_board) and 1<=int(col)<=len(visible_board[0])):
             print('Input is outside the board. Please enter again.')
             input_check(visible_board)
-        if action_type=='r'or action_type=='f' and type(visible_board[int(row)-1][int(col)-1])==int:
+        if action_type=='r' or action_type=='f' and type(visible_board[int(row)-1][int(col)-1])==int:
             print('This cell has already been revealed. Please enter again')
+            input_check(visible_board)
+        if action_type=='r' and visible_board[int(row)-1][int(col)-1]=='F':
+            print('There is a flag in this cell. Please Remove the flag before you reveal this cell. Please enter again')
             input_check(visible_board)
         return (action_type,int(row)-1,int(col)-1)
     return input_check(visible_board)
@@ -140,6 +143,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
