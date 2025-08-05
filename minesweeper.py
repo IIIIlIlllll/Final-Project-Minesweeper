@@ -82,7 +82,10 @@ def flag_cell(row: int, col: int, visible_board: List[List[str]]) -> None:
         row, col: 要操作的格子位置
         visible_board: 用户可见地图
     """
-    pass
+    if visible_board[row][col]=='F':
+        visible_board[row][col]='□'
+    else:
+        visible_board[row][col]='F'
 
 
 def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
@@ -137,6 +140,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
