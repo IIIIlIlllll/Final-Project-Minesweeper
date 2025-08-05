@@ -46,7 +46,7 @@ def print_board(visible_board: List[List[str]]) -> None:
     参数:
         visible_board: 用户视角棋盘
     """
-    pass
+
 
 
 def reveal_cell(row: int, col: int, visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
@@ -104,6 +104,7 @@ def play_game() -> None:
 
 if __name__ == "__main__":
     play_game()
+
 
 
 
