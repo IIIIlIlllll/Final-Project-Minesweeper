@@ -8,12 +8,15 @@ def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], L
         visible_board.append([])
         for y in range(0,cols):
             visible_board[x].append('□')
+    print_board(visible_board)
     input=get_user_action(visible_board)
     while input[0]!='r':
         print("Please reveal a cell first.")
         input=get_user_action(visible_board)
     real_board = place_mines(rows,cols,num_mines,input[1],input[2])
-    return visible_board,real_board,input[1],input[2]
+    reveal_cell(input[1],input[2],visible_board,real_board)
+    print_board(visible_board)
+    return visible_board,real_board
     ###初始化棋盘，生成可见地图和真实地图（含雷及数字)###
 
 def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col: int) -> List[List[int]]:
@@ -23,6 +26,7 @@ def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col:
     返回:
         real_board: 包含地雷('M')和数字(0~8)的地图
     """
+
     real_board=[]
     for row in range(rows):
         real_board+=[[0]*cols]
@@ -44,7 +48,7 @@ def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col:
 def print_board(visible_board: List[List[str]]) -> None:
     print(' '.join(map(str, list(range(0, len(visible_board)+1)))))
     for x in range (0, len(visible_board)):
-            print(str(x+1) + ' ' + (' '.join(visible_board[x])))
+        print(str(x+1) + ' ' + (' '.join([str(cell) for cell in visible_board[x]])))
     """
     打印当前用户可见的棋盘。
 
@@ -107,7 +111,6 @@ def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -
                 return False
     return True
 
-
 def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
     """
     从用户处获取输入操作，并且确保用户输入合法。
@@ -116,55 +119,67 @@ def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
         action_type: 'open' 或 'flag'
         row, col: 操作的目标坐标(已经减过1)
     """
-    print("Please enter 'r' to reveal a cell or 'f' to place or remove a flag on a cell. Then enter The coordinates of the cell, separated by a space.(eg. r 1 2)")
-    def input_check(visible_board):
-        action_type,row,col=input().split()
+    print("Please enter 'r' to reveal a cell or 'f' to place or remove a flag on a cell. Then enter The coordinates of the cell, separated by a space.(eg. r 1 1)")
+    while True:
         try:
-            row=int(row)
-            col=int(col)
+            action_type, row, col = input().split()
+            row = int(row)
+            col = int(col)
         except ValueError:
-            print('Invalid input. Please enter again.')
-            input_check(visible_board)
-        if not(action_type=='r' or action_type=='f'):
-            print('Invalid input. Please enter again.')
-            input_check(visible_board)
-        if not(1<=int(row)<=len(visible_board) and 1<=int(col)<=len(visible_board[0])):
-            print('Input is outside the board. Please enter again.')
-            input_check(visible_board)
-        if (action_type=='r' or action_type=='f') and type(visible_board[int(row)-1][int(col)-1])==int:
+            print('Invalid input. Please enter again.(eg. r 1 1)')
+            continue
+        if not(action_type == 'r' or action_type == 'f'):
+            print("Invalid input. Please enter again. The action must br 'r' or 'f'")
+            continue
+        if not(1 <= int(row) <= len(visible_board) and 1 <= int(col) <= len(visible_board[0])):
+            print(f'Input is outside the board. Please enter again. (row:1-{len(visible_board)}, col:1-{len(visible_board[0])})')
+            continue
+        if (action_type == 'r' or action_type == 'f') and type(visible_board[int(row)-1][int(col)-1]) == int:
             print('This cell has already been revealed. Please enter again')
-            input_check(visible_board)
-        if action_type=='r' and visible_board[int(row)-1][int(col)-1]=='F':
+            continue
+        if action_type == 'r' and visible_board[int(row)-1][int(col)-1] == 'F':
             print('There is a flag in this cell. Please Remove the flag before you reveal this cell. Please enter again')
-            input_check(visible_board)
-        return (action_type,int(row)-1,int(col)-1)
-    return input_check(visible_board)
+            continue
+        return (action_type, int(row) - 1, int(col) - 1)
+
 
 
 def play_game() -> None:
     """
     主游戏循环，控制整个游戏流程。
     """
+    """
+    设置游戏棋盘的尺寸和雷数，并对用户输入进行验证。
+    """
     print('Please enter the number of rows and columns of the game board (5-20), separated by a space')
-    def input_check1():
-        num_rows,num_cols=input().split()
-        num_rows=int(num_rows)
-        num_cols=int(num_cols)
-        if not(5<=num_rows<=20 and 5<=num_cols<=20):
-            print('Invalid input. Please enter again.')
-            input_check1()
-        return num_rows,num_cols
-    num_rows,num_cols=input_check1()
+    while True:
+        try:
+            num_rows, num_cols = input().split()
+            num_rows = int(num_rows)
+            num_cols = int(num_cols)
+        except ValueError:
+            print('Invalid format. Please enter two numbers separated by a space.')
+            continue
+        if not(5 <= num_rows <= 20 and 5 <= num_cols <= 20):
+            print('Invalid range. Both numbers must be between 5 and 20. Please enter again.')
+            continue
+        break
     print(f'Please enter the number of mines (1-{num_rows*num_cols-1})')
-    def input_check2(num_rows,num_cols):
-        num_mines=input()
-        num_mines=int(num_mines)
-        if not(1<=num_mines<=num_rows*num_cols-1):
-            print('Invalid input. Please enter again.')
-            input_check2()
-        return num_mines
-    num_mines=input_check2(num_rows,num_cols)
-    visible_board,real_board,input_row,input_col=init_board(num_rows,num_cols,num_mines)
+    max_mines = num_rows * num_cols - 1
+    while True:
+        try:
+            num_mines = input()
+            num_mines = int(num_mines)
+        except ValueError:
+            print('Invalid format. Please enter a single number.')
+            continue
+        if not(1 <= num_mines <= max_mines):
+            print(f'Invalid range. The number of mines must be between 1 and {max_mines}. Please enter again.')
+            continue
+        break
+    visible_board,real_board=init_board(num_rows,num_cols,num_mines)
+    end_game=False
+
 
         
 
