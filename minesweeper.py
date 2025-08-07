@@ -1,7 +1,22 @@
 import random
-from typing import List, Tuple
 
-def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], List[List[int]]]:
+def init_board(rows: int, cols: int, num_mines: int):
+    """
+    input:
+        rows(int): The number of rows of the board
+        cols(int): The number of cols of the board
+        num_mines(int): The number of mines
+
+    output:
+        visible_board(list[list[int,str]])
+        real_board(list[list[int,str]])
+
+    function:
+        Initialize the chessboard according to the size input by the user.
+    """
+
+    
+#Creat visible_board
     visible_board = []
     real_board = []
     for x in range(0,rows):
@@ -9,6 +24,8 @@ def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], L
         for y in range(0,cols):
             visible_board[x].append('□')
     print_board(visible_board)
+
+#The first time the input is read, to prevent the user from losing at the first step.
     input=get_user_action(visible_board)
     while input[0]!='r':
         print("Please reveal a cell first.")
@@ -16,16 +33,28 @@ def init_board(rows: int, cols: int, num_mines: int) -> Tuple[List[List[str]], L
     real_board = place_mines(rows,cols,num_mines,input[1],input[2])
     reveal_cell(input[1],input[2],visible_board,real_board)
     print_board(visible_board)
+
     return visible_board,real_board
-    ###初始化棋盘，生成可见地图和真实地图（含雷及数字)###
 
-def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col: int) -> List[List[int]]:
-    """
-    随机放置地雷并计算每个格子的数字（周围地雷数）。
 
-    返回:
-        real_board: 包含地雷('M')和数字(0~8)的地图
+
+
+def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col: int) :
     """
+    input:
+        rows(int): The number of rows of the board
+        cols(int): The number of cols of the board
+        num_mines(int): The number of mines
+        input_row(int): The row entered for the first time
+        input_col(int): The col entered for the first time
+
+    output:
+        real_board(list[list[int, str]])
+
+    function:
+        Create a board with mines randomly. Prevent the user from losing at the first step.
+    """
+
 
     real_board=[]
     for row in range(rows):
@@ -45,7 +74,37 @@ def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col:
 
 
 
-def print_board(visible_board: List[List[str]]) -> None:
+def print_board(visible_board: list[list[int, str]]):
+    """
+    input:
+        visible_board(list[list[int, str]]): Any board
+
+    output:
+        None
+
+    function:
+        Print the board in the following format:
+ 0   1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+ 
+ 1   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □ 
+ 2   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □ 
+ 3   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □ 
+ 4   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+ 5   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+ 6   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+ 7   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+ 8   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+ 9   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+10   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+11   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+12   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+13   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+14   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+15   □  □  □  □  □  □  □  □  □  □  □  □  □  □  □
+
+    """
+
+
     output=" 0  "
     for col in range(1,len(visible_board[0])+1):
         if col<=9:
@@ -63,27 +122,26 @@ def print_board(visible_board: List[List[str]]) -> None:
             output+=' '+str(visible_board[row][col])+' '
         print(output)
     return None
+
+
+
+
+def reveal_cell(row: int, col: int, visible_board: list[list[int, str]], real_board: list[list[int, str]]):
     """
-    打印当前用户可见的棋盘。
+    input:
+        row(int): The input row 
+        col(int): The input col 
+        visible_board(list[list[int, str]]): Current situation of the board
+        real_board(list[list[int, str]]): The real board
 
-    参数:
-        visible_board: 用户视角棋盘
+    output:
+        bool: Whether stepped on a mine
+
+    function:
+        Reveal a cell, if the cell is 0, reveal the 8 cells around it. (Will run recursively)
     """
 
 
-
-def reveal_cell(row: int, col: int, visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
-    """
-    打开一个格子，如果是0则展开周围，更新visible_board。
-
-    参数:
-        row, col: 要打开的格子位置
-        visible_board: 用户可见地图
-        real_board: 真实地图
-
-    返回:
-        是否踩雷，True 表示踩到地雷，游戏失败
-    """
     if real_board[row][col]=='M':
         visible_board[row][col]=='M'
         return True
@@ -97,14 +155,23 @@ def reveal_cell(row: int, col: int, visible_board: List[List[str]], real_board: 
     return False
 
 
-def flag_cell(row: int, col: int, visible_board: List[List[str]]) -> None:
-    """
-    标记或取消标记一个格子为旗帜。
 
-    参数:
-        row, col: 要操作的格子位置
-        visible_board: 用户可见地图
+
+def flag_cell(row: int, col: int, visible_board: list[list[int, str]]) -> None:
     """
+    input:
+        row(int): The input row 
+        col(int): The input col 
+        visible_board(list[list[int, str]]): Current situation of the board
+
+    output:
+        None
+
+    function:
+        Place a flag on a cell without flag, or remove the flag on a cell that already has a flag.
+    """
+
+
     if visible_board[row][col]=='F':
         visible_board[row][col]='□'
     else:
@@ -112,13 +179,22 @@ def flag_cell(row: int, col: int, visible_board: List[List[str]]) -> None:
 
 
 
-def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -> bool:
-    """
-    检查是否胜利：所有非地雷格子都已打开。
 
-    返回:
-        True 表示胜利
+def check_victory(visible_board: list[list[int, str]], real_board: list[list[int, str]]):
     """
+    input:
+        visible_board(list[list[int, str]]): Current situation of the board
+        real_board(list[list[int, str]]): The real board
+
+    output:
+        bool: Whether win the game
+
+    function:
+        Compare the visible_board and the real_board. If every cells without mines are revealed or there is flag on every cells with mines.
+
+    """
+
+
     output=True
     for row in range(len(visible_board)):
         for col in range(len(visible_board[row])):
@@ -139,14 +215,21 @@ def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -
             break
     return output
 
-def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
+def get_user_action(visible_board: list[list[int, str]]):
     """
-    从用户处获取输入操作，并且确保用户输入合法。
+    input:
+        visible_board(list[list[int, str]]): Current situation of 
 
-    返回:
-        action_type: 'open' 或 'flag'
-        row, col: 操作的目标坐标(已经减过1)
+    output:
+        action_type(str): Action user want to do, 'r' to reveal a cell or 'f' to place or remove a flag on a cell
+        row: The row of the cell to be dealt with. (Subtract one and make it compatible with Python)
+        col: The col of the cell to be dealt with. (Subtract one and make it compatible with Python)
+
+    function:
+        Obtain the input operation from the user and ensure that the user input is valid.
     """
+
+
     print("Please enter 'r' to reveal a cell or 'f' to place or remove a flag on a cell. Then enter The coordinates of the cell, separated by a space.(eg. r 1 1)")
     while True:
         try:
@@ -156,30 +239,42 @@ def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
         except ValueError:
             print('Invalid input. Please enter again.(eg. r 1 1)')
             continue
+
+        #Make sure action type is correct
         if not(action_type == 'r' or action_type == 'f'):
             print("Invalid input. Please enter again. The action must br 'r' or 'f'")
             continue
+
+        #Make sure the position is in the board
         if not(1 <= int(row) <= len(visible_board) and 1 <= int(col) <= len(visible_board[0])):
             print(f'Input is outside the board. Please enter again. (row:1-{len(visible_board)}, col:1-{len(visible_board[0])})')
             continue
+
+        #Make sure that the user don't do action on the cell that have already been revealed
         if (action_type == 'r' or action_type == 'f') and type(visible_board[int(row)-1][int(col)-1]) == int:
             print('This cell has already been revealed. Please enter again')
             continue
+
+        #Make sure that the user don't reveal a cell with flag on it.
         if action_type == 'r' and visible_board[int(row)-1][int(col)-1] == 'F':
             print('There is a flag in this cell. Please Remove the flag before you reveal this cell. Please enter again')
             continue
+
         return (action_type, int(row) - 1, int(col) - 1)
 
 
 
-def play_game() -> None:
+
+def play_game():
     """
-    主游戏循环，控制整个游戏流程。
+    The main game loop controls the entire game process.
     """
-    """
-    设置游戏棋盘的尺寸和雷数，并对用户输入进行验证。
-    """
+
+
+    print("Game start! Instruction: The mine is represented by 'M', the flag is represented by 'F', '□' means the cell hasn't been revealed. The number of the cell means how many mines are there in the 8 cells around the cell.")
     print('Please enter the number of rows and columns of the game board (5-20), separated by a space')
+
+    #Set up the size of board and the number of mines
     while True:
         try:
             num_rows, num_cols = input().split()
@@ -205,7 +300,11 @@ def play_game() -> None:
             print(f'Invalid range. The number of mines must be between 1 and {max_mines}. Please enter again.')
             continue
         break
+
+    #Initialize
     visible_board,real_board=init_board(num_rows,num_cols,num_mines)
+
+    #Main game loop
     while True:
         action=get_user_action(visible_board)
         if action[0]=='r':
@@ -227,14 +326,6 @@ def play_game() -> None:
                 break
             else:
                 print_board(visible_board)
-
-        
-
-
-
-
-
-        
 
 
 if __name__ == "__main__":
