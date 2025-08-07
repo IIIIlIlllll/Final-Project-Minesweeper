@@ -46,9 +46,23 @@ def place_mines(rows: int, cols: int, num_mines: int, input_row: int, input_col:
 
 
 def print_board(visible_board: List[List[str]]) -> None:
-    print(' '.join(map(str, list(range(0, len(visible_board)+1)))))
-    for x in range (0, len(visible_board)):
-        print(str(x+1) + ' ' + (' '.join([str(cell) for cell in visible_board[x]])))
+    output=" 0  "
+    for col in range(1,len(visible_board[0])+1):
+        if col<=9:
+            output+=' '+str(col)+' '
+        else:
+            output+=' '+str(col)
+    print(output)
+    print(' ')
+    for row in range(len(visible_board)):
+        if row<9:
+            output=' '+str(row+1)+'  '
+        else:
+            output=str(row+1)+'  '
+        for col in range(len(visible_board[0])):
+            output+=' '+str(visible_board[row][col])+' '
+        print(output)
+    return None
     """
     打印当前用户可见的棋盘。
 
@@ -105,11 +119,25 @@ def check_victory(visible_board: List[List[str]], real_board: List[List[int]]) -
     返回:
         True 表示胜利
     """
+    output=True
     for row in range(len(visible_board)):
         for col in range(len(visible_board[row])):
             if type(real_board[row][col])==int and type(visible_board[row][col])!=int:
-                return False
-    return True
+                output=False
+                break
+        if output==False:
+            break
+    if output==True:
+        return True
+    output=True
+    for row in range(len(visible_board)):
+        for col in range(len(visible_board[row])):
+            if real_board[row][col]=='M' and visible_board[row][col]!='F':
+                output=False
+                break
+        if output==False:
+            break
+    return output
 
 def get_user_action(visible_board: List[List[str]]) -> Tuple[str, int, int]:
     """
@@ -164,8 +192,8 @@ def play_game() -> None:
             print('Invalid range. Both numbers must be between 5 and 20. Please enter again.')
             continue
         break
-    print(f'Please enter the number of mines (1-{num_rows*num_cols-1})')
-    max_mines = num_rows * num_cols - 1
+    print(f'Please enter the number of mines (1-{num_rows*num_cols-2})')
+    max_mines = num_rows * num_cols - 2
     while True:
         try:
             num_mines = input()
@@ -178,7 +206,32 @@ def play_game() -> None:
             continue
         break
     visible_board,real_board=init_board(num_rows,num_cols,num_mines)
-    end_game=False
+    while True:
+        action=get_user_action(visible_board)
+        if action[0]=='r':
+            if reveal_cell(action[1],action[2],visible_board,real_board)==True:
+                print_board(real_board)
+                print('You lose!')
+                break
+            if  check_victory(visible_board,real_board):
+                print_board(real_board)
+                print('Congratulations! You win!')
+                break
+            else:
+                print_board(visible_board)
+        if action[0]=='f':
+            flag_cell(action[1],action[2],visible_board)
+            if  check_victory(visible_board,real_board):
+                print_board(real_board)
+                print('Congratulations! You win!')
+                break
+            else:
+                print_board(visible_board)
+
+        
+
+
+
 
 
         
